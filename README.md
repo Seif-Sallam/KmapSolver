@@ -1,5 +1,5 @@
 # KmapSolver
-a 2, 3, and 4 variable K-map solver.
+A 2, 3, and 4 variable K-map solver.
 
 ## Objective
 A univeristy project that aims at familiarizing the students with the use of k-maps and simplifying boolean expressions. 
