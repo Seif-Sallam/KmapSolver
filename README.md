@@ -20,4 +20,4 @@ A univeristy project that aims at familiarizing the students with the use of k-m
 
 ## Contacts
 * Email: Seif_Sallam@aucegypt.edu
-* Linkedin: Seif Sallam -> [Linkedin](https://www.linkedin.com/in/seif-sallam-b58bba196)
+* Linkedin: [Seif Sallam](https://www.linkedin.com/in/seif-sallam-b58bba196)
