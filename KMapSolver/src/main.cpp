@@ -1,6 +1,6 @@
 #include <fstream>
-#include "Button.h"
-#include "Application.h"
+#include "Engine/Button.h"
+#include "Engine/Application.h"
 #include "MapsManager.h"
 
 namespace KM {
@@ -162,31 +162,35 @@ namespace KM {
 						numberOfFiles = stoi(temp);
 					}
 				}
+				outFileNumber.close();
 
 				//The output file name
 				std::string output = "Kmap" + std::to_string(numberOfFiles) + ".txt";
 
-				outFileNumber.close();
-
 				//Updating the number of files
-				outputFile.open("numberOfFiles.dat");
-				outputFile << ++numberOfFiles;
-				outputFile.close();
-
+				numberOfFiles++;
 				bool uniqueFile = false;
-				//Now we have a unique file opened
+				//Making sure I have not overridden an old file.
 				while (!uniqueFile)
 				{
-					outputFile.open(output);
-					if (!outputFile.good())
+					std::ifstream tempFile;
+					tempFile.open(output);
+					if (!tempFile.good())
 						uniqueFile = true;
 					else
 					{
-						outputFile.close();
+						tempFile.close();
 						numberOfFiles++;
 						output = "Kmap" + std::to_string(numberOfFiles) + ".txt";
 					}
 				}
+				//Now we have a unique file to open
+
+				//But first we should save the last value so we do not go through this effort every time we save the files
+				outputFile.open("numberOfFiles.dat");
+				outputFile << numberOfFiles;
+				outputFile.close();
+
 				outputFile.open(output);
 
 				//Starting to output the data to the file
@@ -204,7 +208,7 @@ namespace KM {
 					indiciesVec = { 0, 2, 1, 3 };
 					rows = 2;
 					cols = 2;
-					outputFile << "      A\n";
+					outputFile << "   A\n";
 					outputFile << "B  ";
 					break;
 				case 3:
@@ -263,6 +267,16 @@ namespace KM {
 			m_appWindow->draw(*saveButton);
 			for (uint16_t i = 0; i < 3; i++)
 				m_appWindow->draw(*switchButtons[i]);
+		}
+
+		~KMapSolver()
+		{
+			delete mm;
+			delete kmap;
+			delete table;
+			for (uint16_t i = 0; i < 3; i++)
+				delete switchButtons[i];
+			delete saveButton;
 		}
 
 	private:

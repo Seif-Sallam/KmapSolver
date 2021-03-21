@@ -8,11 +8,7 @@ KM::MapsManager::MapsManager(TruthTable& table, Kmap& kmap)
 void KM::MapsManager::UpdateInTheOther(uint16_t change)
 {
 	if (change == 1)
-	{
 		kmap.ReConfig();
-	}
 	else
-	{
 		table.ReConfig();
-	}
 }

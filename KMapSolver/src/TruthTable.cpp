@@ -1,7 +1,12 @@
 #include "TruthTable.h"
-
+/*
+	The whole constructor is used to initialize the values inside the class and to know the positions of the cells
+	The way it is used is quite raw bust and hard coded positions were used, however, this was the only way since
+	the truth table had many different sections (the variables names, the truth values, the buttons, and each cell's text)
+*/
 KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf::RenderWindow* window)
 {
+	
 	uint32_t minTerms = pow(2, numberOfVariables);
 
 	/*
@@ -25,7 +30,6 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 	/*
 	Rows We have the the variables and one title for the variables
 	3 columns represent the min terms values for the
-	
 	*/
 	m_cellsText = new sf::Text[m_iSize];
 	m_cellShapes = new sf::RectangleShape[m_iSize];
