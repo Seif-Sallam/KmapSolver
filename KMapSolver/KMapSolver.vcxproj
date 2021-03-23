@@ -150,17 +150,17 @@
   <ItemGroup>
     <ClCompile Include="src\MapsManager.cpp" />
     <ClCompile Include="src\Kmap.cpp" />
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Engine\Application.cpp" />
+    <ClCompile Include="src\Engine\Button.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\TruthTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MapsManager.h" />
     <ClInclude Include="src\Kmap.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\Button.h" />
-    <ClInclude Include="src\States.h" />
+    <ClInclude Include="src\Engine\Application.h" />
+    <ClInclude Include="src\Engine\Button.h" />
+    <ClInclude Include="src\Engine\States.h" />
     <ClInclude Include="src\TruthTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
