@@ -12,7 +12,8 @@ A univeristy project that aims at familiarizing the students with the use of k-m
 * Clone the repository on your PC.
 * Open the solution file as it is already configuired properly to work with any paths.
 * Make sure that you put the 'Thirdparty' folder at the same level as the solution directory
-* Compiling would not be an issue at that time. 
+* Compiling would not be an issue at that time.
+* Make sure to compile at the x32 (x86) architecture since the SFML library is linked for that architecture only.
 * If you have any problems with the SFML library, check out the offical page of SFML: https://www.sfml-dev.org/index.php or contact me at: Seif_Sallam@aucegypt.edu
 
 ## Demonstration:
