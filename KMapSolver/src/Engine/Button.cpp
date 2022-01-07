@@ -1,8 +1,8 @@
 #include "Button.h"
+#include <SFML/System.hpp>
 using namespace WI;
 
-
-Button::Button(sf::RenderWindow* window, ButtonConfig config)
+Button::Button(sf::RenderWindow *window, ButtonConfig config)
 	: m_window(window)
 {
 	this->config = config;
@@ -14,26 +14,26 @@ Button::Button(sf::RenderWindow* window, ButtonConfig config)
 	m_bHasStaticSize = false;
 }
 
-bool Button::EventHandling(sf::Event* event, const std::string& newText, bool reAdjust, void(*function)(Button*) )
+bool Button::EventHandling(sf::Event *event, const std::string &newText, bool reAdjust, void (*function)(Button *))
 {
-	if(MouseOnButton())
+	if (MouseOnButton())
 		if (event->type == sf::Event::MouseButtonPressed && event->mouseButton.button == sf::Mouse::Left)
 		{
 			Flicker(true);
 			function(this);
-			if(newText != "")
+			if (newText != "")
 				UpdateText(newText, reAdjust);
 			return true;
 		}
 		else
 			Flicker(false);
 	return false;
-		
 }
 
-void Button::UpdateText(const std::string& text, bool reAdjust)
+void Button::UpdateText(const std::string &text, bool reAdjust)
 {
 	m_text.setString(text);
+	m_IsOne = (text == "1");
 	if (reAdjust)
 	{
 		sf::FloatRect bounds = m_text.getLocalBounds();
@@ -44,15 +44,15 @@ void Button::UpdateText(const std::string& text, bool reAdjust)
 
 std::string Button::GetButtonText()
 {
-	return m_text.getString();
+	return "Text";
 }
 
-void Button::SetTextSize(const unsigned int& size)
+void Button::SetTextSize(const unsigned int &size)
 {
 	m_text.setCharacterSize(size);
 }
 
-void Button::SetStaticSize(const sf::Vector2f& size)
+void Button::SetStaticSize(const sf::Vector2f &size)
 {
 	m_bHasStaticSize = true;
 	m_body.setSize(size);
@@ -64,16 +64,16 @@ void Button::SetStaticSize(const sf::Vector2f& size)
 	m_position = m_body.getPosition();
 }
 
-void Button::SetFont(const sf::Font& font)
+void Button::SetFont(const sf::Font &font)
 {
 	m_text.setFont(font);
 }
 
-void Button::SetPosition(const sf::Vector2f& position)
+void Button::SetPosition(const sf::Vector2f &position)
 {
 	m_position = position;
 	m_body.setPosition(position.x, position.y + 2.0f);
-	if(!m_bHasStaticSize)
+	if (!m_bHasStaticSize)
 		m_text.setPosition(position.x + 5.0f, position.y + 5.0f);
 	else
 	{
@@ -92,13 +92,13 @@ void Button::WrapToTopLeftCorner(int index)
 {
 	sf::Vector2f size = sf::Vector2f(m_window->getView().getSize().x, m_window->getView().getSize().y);
 	sf::Vector2f pos = sf::Vector2f(m_window->getView().getCenter().x - size.x / 2.0f, m_window->getView().getCenter().y - size.y / 2.0f);
-	
+
 	SetPosition(sf::Vector2f(pos.x + (m_body.getSize().x + 10.0f) * index, pos.y));
 }
 
-void Button::AddConfig(const ButtonConfig& config)
+void Button::AddConfig(const ButtonConfig &config)
 {
-	if (config.transparent) 
+	if (config.transparent)
 		m_body.setFillColor(sf::Color::Transparent);
 	else
 		m_body.setFillColor(config.bgColor);
@@ -114,11 +114,11 @@ void Button::AddConfig(const ButtonConfig& config)
 	{
 		m_text.setFont(*config.font);
 	}
-	m_text.setFillColor(config.txtColor);	
+	m_text.setFillColor(config.txtColor);
 	m_text.setString(config.text);
 }
 
-void Button::draw(sf::RenderTarget& window, sf::RenderStates state) const
+void Button::draw(sf::RenderTarget &window, sf::RenderStates state) const
 {
 	window.draw(m_body, state);
 	window.draw(m_text, state);

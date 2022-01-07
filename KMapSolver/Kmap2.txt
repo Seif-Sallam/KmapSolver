@@ -1,0 +1,7 @@
+This is a representation of the Kmap that is 3x2:
+This is the Kmap: 
+      AB
+C  0 0 0 0 
+   0 0 0 0 
+The simplified expression is: 
+False

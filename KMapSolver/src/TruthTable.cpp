@@ -1,12 +1,13 @@
 #include "TruthTable.h"
+#include <math.h>
 /*
 	The whole constructor is used to initialize the values inside the class and to know the positions of the cells
 	The way it is used is quite raw bust and hard coded positions were used, however, this was the only way since
 	the truth table had many different sections (the variables names, the truth values, the buttons, and each cell's text)
 */
-KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf::RenderWindow* window)
+KM::TruthTable::TruthTable(const uint32_t &numberOfVariables, sf::Font *font, sf::RenderWindow *window)
 {
-	
+
 	uint32_t minTerms = pow(2, numberOfVariables);
 
 	/*
@@ -33,7 +34,7 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 	*/
 	m_cellsText = new sf::Text[m_iSize];
 	m_cellShapes = new sf::RectangleShape[m_iSize];
-	m_buttons = new WI::Button*[m_iRows - 1];
+	m_buttons = new WI::Button *[m_iRows - 1];
 
 	m_buttonConfig.bgColor = sf::Color(209, 75, 0);
 	m_buttonConfig.brdrColor = sf::Color::White;
@@ -48,7 +49,6 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 	{
 		m_cellsStates.push_back(0);
 	}
-
 
 	for (uint32_t i = 0; i < m_iRows - 1; i++)
 	{
@@ -66,7 +66,7 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 	}
 	for (uint32_t i = 0; i < numberOfVariables; i++)
 	{
-		m_cellShapes[i].setFillColor(sf::Color(179,0,0));
+		m_cellShapes[i].setFillColor(sf::Color(179, 0, 0));
 	}
 	m_cellShapes[m_iSize - 1].setFillColor(sf::Color(179, 0, 0));
 	// PUtting each and everyone in place
@@ -74,7 +74,7 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 	//putting the buttons
 	sf::Vector2f offset;
 	offset.x = numberOfVariables * tileSize; // this is for the buttons
-	offset.y = 50.0f; // a common offset
+	offset.y = 50.0f;						 // a common offset
 
 	for (uint32_t i = 0; i < m_iRows - 1; i++)
 	{
@@ -97,7 +97,7 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 	m_cellsText[m_iSize - 1].setString("F");
 	m_cellsText[m_iSize - 1].setPosition(sf::Vector2f(numberOfVariables * tileSize + 5.0f, 5.0f));
 	m_cellShapes[m_iSize - 1].setPosition(sf::Vector2f(numberOfVariables * tileSize, 0.0f));
-	
+
 	for (int32_t i = m_iCols - 1, k = 0; i >= 0; i--, k++)
 	{
 		uint32_t behavior = pow(2, k);
@@ -116,16 +116,15 @@ KM::TruthTable::TruthTable(const uint32_t& numberOfVariables, sf::Font* font, sf
 				counter++;
 		}
 	}
-
 }
 
-bool KM::TruthTable::HandleEvents(sf::Event* event)
+bool KM::TruthTable::HandleEvents(sf::Event *event)
 {
 	for (uint32_t i = 0; i < m_iRows - 1; i++)
 	{
-		if (m_buttons[i]->EventHandling(event, (m_buttons[i]->GetButtonText() == "0") ? "1" : "0"))
+		if (m_buttons[i]->EventHandling(event, (!m_buttons[i]->IsOne()) ? "1" : "0"))
 		{
-			m_cellsStates[i] = (m_buttons[i]->GetButtonText() == "0") ? 0 : 1;
+			m_cellsStates[i] = (!m_buttons[i]->IsOne()) ? 0 : 1;
 			return true;
 		}
 	}
@@ -149,12 +148,12 @@ void KM::TruthTable::ReConfig()
 	}
 }
 
-std::vector<uint16_t>& KM::TruthTable::GetStatesVector()
+std::vector<uint16_t> &KM::TruthTable::GetStatesVector()
 {
 	return m_cellsStates;
 }
 
-void KM::TruthTable::draw(sf::RenderTarget& target, sf::RenderStates state) const
+void KM::TruthTable::draw(sf::RenderTarget &target, sf::RenderStates state) const
 {
 
 	for (uint32_t i = 0; i < m_iSize; i++)

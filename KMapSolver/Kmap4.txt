@@ -1,0 +1,7 @@
+This is a representation of the Kmap that is 2x2:
+This is the Kmap: 
+   A
+B  1 0 
+   1 1 
+The simplified expression is: 
+F = B + A'

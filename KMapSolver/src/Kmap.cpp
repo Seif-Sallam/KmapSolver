@@ -1,6 +1,6 @@
 #include "Kmap.h"
-
-KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, std::vector<uint16_t>& cellStates, sf::RenderWindow* window, sf::Font* font)
+#include <math.h>
+KM::Kmap::Kmap(const uint32_t &numberOfVariables, const sf::Vector2f &offsets, std::vector<uint16_t> &cellStates, sf::RenderWindow *window, sf::Font *font)
 	: m_cellState(cellStates), numberOfVariables(numberOfVariables)
 {
 	//Knowing the number of min terms
@@ -13,14 +13,13 @@ KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, s
 
 	//declaring the correct sizes
 	m_cellText = new sf::Text[m_iSize];
-	m_buttons = new WI::Button*[minTerms];
-	
+	m_buttons = new WI::Button *[minTerms];
 
 	//The expressions data
 	m_expressions = new std::bitset<2>[m_iSize];
 
-	sf::Vector2f tileSize = { 45.0f, 45.0f };
-	
+	sf::Vector2f tileSize = {45.0f, 45.0f};
+
 	//Do the config
 	m_buttonConfig.bgColor = sf::Color(209, 75, 0);
 	m_buttonConfig.brdrColor = sf::Color(0, 136, 209);
@@ -30,7 +29,6 @@ KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, s
 	m_buttonConfig.hasBorders = true;
 	m_buttonConfig.txtColor = sf::Color::Black;
 	m_buttonConfig.brdrSize = 1.f;
-
 
 	// Adding the buttons with the correct dimensions and the correct sizes
 	for (uint32_t i = 0; i < minTerms; i++)
@@ -52,21 +50,21 @@ KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, s
 	{
 
 		//Setting the buttons positions
-		for (uint32_t i = 0; i < 2; i++) {
+		for (uint32_t i = 0; i < 2; i++)
+		{
 			for (uint32_t j = 0; j < 2; j++)
 			{
 				sf::Vector2f pos = sf::Vector2f(offsets.x + (tileSize.x + 3.0) * i + 4.0f, offsets.y + (tileSize.y + 3.0) * j + 4.0f);
 				m_buttons[i * 2 + j]->SetPosition(pos);
 			}
 		}
-		
+
 		//Setting the texts for the cellTexts
 		for (uint32_t i = 0; i < 2; i++)
 		{
 			m_cellText[i].setString(std::to_string(i));
 			m_cellText[i].setPosition(offsets.x + tileSize.x * i, offsets.y - tileSize.y);
 		}
-
 
 		for (uint32_t i = 2, k = 0; i < 4; i++, k++)
 		{
@@ -82,10 +80,9 @@ KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, s
 	case 3:
 	{
 		int32_t index = 0;
-		uint32_t indcies[] = { 
+		uint32_t indcies[] = {
 			0, 2, 6, 4,
-			1, 3, 7, 5
-		};
+			1, 3, 7, 5};
 
 		//Setting the positions
 		for (uint32_t i = 0; i < 2; i++)
@@ -117,23 +114,21 @@ KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, s
 		m_cellText[6].setString("C");
 		m_cellText[7].setPosition(offsets.x, offsets.y - tileSize.y * 2.0f);
 		m_cellText[7].setString("AB");
-
 	}
 	break;
 	case 4:
 	{
 		int32_t index = 0;
 		uint32_t indcies[] = {
-			0,4,12,8,
-			1,5,13,9,
-			3,7,15,11,
-			2,6,14,10
-		};
+			0, 4, 12, 8,
+			1, 5, 13, 9,
+			3, 7, 15, 11,
+			2, 6, 14, 10};
 
 		for (uint32_t i = 0; i < 4; i++)
 			for (uint32_t j = 0; j < 4; j++)
 				m_buttons[indcies[index++]]->SetPosition(sf::Vector2f(offsets.x + (tileSize.x + 3.0f) * j, offsets.y + (tileSize.y + 3.0f) * i));
-	
+
 		m_expressions[0] = 0;
 		m_expressions[1] = 1;
 		m_expressions[2] = 3;
@@ -157,21 +152,21 @@ KM::Kmap::Kmap(const uint32_t& numberOfVariables, const sf::Vector2f& offsets, s
 		}
 		m_cellText[8].setPosition(offsets.x - tileSize.x * 2.0f, offsets.y);
 		m_cellText[8].setString("CD");
-		m_cellText[9].setPosition(offsets.x , offsets.y - tileSize.y * 2.0f);
+		m_cellText[9].setPosition(offsets.x, offsets.y - tileSize.y * 2.0f);
 		m_cellText[9].setString("AB");
 	}
 	break;
 	}
 }
 
-bool KM::Kmap::HandleEvent(sf::Event* event)
+bool KM::Kmap::HandleEvent(sf::Event *event)
 {
 	//Handling the events for every single button
 	for (uint32_t i = 0; i < m_iMinTerms; i++)
 	{
-		if (m_buttons[i]->EventHandling(event, (m_buttons[i]->GetButtonText() == "0") ? "1" : "0"))
+		if (m_buttons[i]->EventHandling(event, (!m_buttons[i]->IsOne()) ? "1" : "0"))
 		{
-			m_cellState[i] = (m_buttons[i]->GetButtonText() == "0") ? 0 : 1;
+			m_cellState[i] = (!m_buttons[i]->IsOne()) ? 0 : 1;
 			return true;
 		}
 	}
@@ -195,7 +190,7 @@ std::string KM::Kmap::Simplify()
 	int32_t falseCounter = 0;
 	for (uint32_t i = 0; i < m_cellState.size(); i++)
 	{
-		auto& state = m_cellState[i];
+		auto &state = m_cellState[i];
 		if (state == 1)
 			trueCounter++;
 		else
@@ -206,7 +201,7 @@ std::string KM::Kmap::Simplify()
 		//TODO: Say it is True
 #ifdef _DEBUG
 		std::cout << "True\n";
-#endif // _DEBUG
+#endif					  // _DEBUG
 		return "F= True"; // return and get out of the function
 	}
 	else if (falseCounter == m_cellState.size())
@@ -230,7 +225,6 @@ std::string KM::Kmap::Simplify()
 
 	//Convert to strings using bit sets
 
-
 	std::vector<std::vector<uint32_t>> minTermsCovered(numberOfMinTerms);
 	//The vector that will store the min terms throughout the algorithm
 	std::vector<mTerm> minTermsInStrings(numberOfMinTerms);
@@ -240,7 +234,8 @@ std::string KM::Kmap::Simplify()
 	{
 	case 2:
 	{
-		for (int32_t i = 0; i < numberOfMinTerms; i++) {
+		for (int32_t i = 0; i < numberOfMinTerms; i++)
+		{
 			std::bitset<2> bits = minTerms[i];
 			minTermsInStrings[i].number = bits.to_string();
 		}
@@ -248,7 +243,8 @@ std::string KM::Kmap::Simplify()
 	break;
 	case 3:
 	{
-		for (int32_t i = 0; i < numberOfMinTerms; i++) {
+		for (int32_t i = 0; i < numberOfMinTerms; i++)
+		{
 			std::bitset<3> bits = minTerms[i];
 			minTermsInStrings[i].number = bits.to_string();
 		}
@@ -256,7 +252,8 @@ std::string KM::Kmap::Simplify()
 	break;
 	case 4:
 	{
-		for (int32_t i = 0; i < numberOfMinTerms; i++) {
+		for (int32_t i = 0; i < numberOfMinTerms; i++)
+		{
 			std::bitset<4> bits = minTerms[i];
 			minTermsInStrings[i].number = bits.to_string();
 		}
@@ -269,7 +266,6 @@ std::string KM::Kmap::Simplify()
 	}
 	//NOW we have them as strings, we can now do the double checking
 	//Double Checking is just the name i gave to this nested for loop, it should check one element to the adjacent ones
-
 
 	//This is the vector that will contain the final answers
 	std::vector<mTerm> sweepVec;
@@ -284,7 +280,8 @@ std::string KM::Kmap::Simplify()
 #endif // _DEBUG
 
 	// The algorithm should go N - 1 number of times to simplify it the most
-	for (uint32_t rounds = 0; rounds < numberOfVariables - 1; rounds++) {
+	for (uint32_t rounds = 0; rounds < numberOfVariables - 1; rounds++)
+	{
 		for (uint32_t i = 0; i < minTermsInStrings.size(); i++)
 		{
 			// A flag to tell you if the min term you are working on right now was used or not
@@ -293,7 +290,8 @@ std::string KM::Kmap::Simplify()
 			// The inner loop that will check the bits
 			for (uint32_t j = 0; j < minTermsInStrings.size(); j++)
 			{
-				if (minTermsInStrings[i].number != minTermsInStrings[j].number) {
+				if (minTermsInStrings[i].number != minTermsInStrings[j].number)
+				{
 					int32_t index = -1; // the index with the change
 					// This function returns true if there is only ONE bit difference, and populates the index with the index of the changed number.
 					if (DifferentByOneBit(minTermsInStrings[i].number, minTermsInStrings[j].number, index))
@@ -302,7 +300,7 @@ std::string KM::Kmap::Simplify()
 						sweepVec.push_back(minTermsInStrings[i]);
 						// We then change the variable's different bit to something that indicates that it is changed here i used the -
 						sweepVec.back().number[index] = '-';
-						
+
 						// We add the covered minterms to the vector
 						for (uint32_t one = 0; one < minTermsInStrings[j].coveredTerms.size(); one++)
 						{
@@ -347,11 +345,9 @@ std::string KM::Kmap::Simplify()
 		//because I want the sweep vector to be cleaned each and every iteration, and i want to also leave it as is in the final one
 		if (rounds != numberOfVariables - 2)
 			sweepVec.clear();
-
 	}
 
-
-	//Removing the equivalent terms 
+	//Removing the equivalent terms
 	int32_t smallerVariable = -1;
 	for (uint16_t i = 0; i < sweepVec.size(); i++)
 		for (uint16_t j = i + 1; j < sweepVec.size(); j++)
@@ -361,7 +357,7 @@ std::string KM::Kmap::Simplify()
 				sweepVec.erase(sweepVec.begin() + removedIndex);
 			}
 
-#ifdef	_DEBUG
+#ifdef _DEBUG
 	std::cout << "min terms covered terms\n";
 	for (uint32_t i = 0; i < sweepVec.size(); i++)
 	{
@@ -375,12 +371,12 @@ std::string KM::Kmap::Simplify()
 #endif
 	//This is the part where we find the essential prime implicants and find which ones to print first
 	std::vector<uint32_t> occurances(minTerms.size());
-	bool* essentialOnes = new bool[minTerms.size()];
+	bool *essentialOnes = new bool[minTerms.size()];
 	for (uint32_t i = 0; i < sweepVec.size(); i++)
 		essentialOnes[i] = false;
 
-
-	for (uint32_t column = 0; column < minTerms.size(); column++) {
+	for (uint32_t column = 0; column < minTerms.size(); column++)
+	{
 		int32_t index = -1;
 		occurances[column] = 0;
 		for (uint32_t i = 0; i < sweepVec.size(); i++)
@@ -413,7 +409,7 @@ std::string KM::Kmap::Simplify()
 	std::cout << std::endl;
 #endif
 	std::vector<int> takenTerms;
-	//This is a special case to add other prime implicants even if they are not essential. 
+	//This is a special case to add other prime implicants even if they are not essential.
 	for (uint32_t i = 0; i < minTerms.size(); i++)
 	{
 		for (uint32_t j = i; j < minTerms.size(); j++)
@@ -425,11 +421,10 @@ std::string KM::Kmap::Simplify()
 		}
 	}
 
-
 	//Printing the final result
 	std::string result = "F = ";
 	for (uint32_t i = 0; i < sweepVec.size(); i++)
-	{	
+	{
 		bool flag = false;
 		if (essentialOnes[i] == true)
 		{
@@ -456,7 +451,7 @@ std::string KM::Kmap::Simplify()
 	return result;
 }
 
-void KM::Kmap::draw(sf::RenderTarget& target, sf::RenderStates state) const
+void KM::Kmap::draw(sf::RenderTarget &target, sf::RenderStates state) const
 {
 	for (uint32_t i = 0; i < m_iSize; i++)
 		target.draw(m_cellText[i]);
@@ -474,7 +469,7 @@ KM::Kmap::~Kmap()
 	delete[] m_expressions;
 }
 
-bool KM::Kmap::IsEquivalent(const std::string& first, const std::string& second, int32_t& deletingString)
+bool KM::Kmap::IsEquivalent(const std::string &first, const std::string &second, int32_t &deletingString)
 {
 	//Checking if the two literals are equivalent
 	int16_t length = first.length();
@@ -510,7 +505,8 @@ uint32_t KM::Kmap::BtoD(uint32_t n)
 	uint32_t decimalNumber = 0;
 	uint32_t base = 1;
 	uint32_t temp = n;
-	while (temp) {
+	while (temp)
+	{
 		uint32_t lastDigit = temp % 10;
 		temp = temp / 10;
 		decimalNumber += lastDigit * base;
@@ -519,7 +515,7 @@ uint32_t KM::Kmap::BtoD(uint32_t n)
 	return decimalNumber;
 }
 
-std::string KM::Kmap::TermInVariables(const std::string& term)
+std::string KM::Kmap::TermInVariables(const std::string &term)
 {
 	std::string result = "";
 	for (uint32_t j = 0; j < numberOfVariables; j++)
@@ -539,16 +535,17 @@ std::string KM::Kmap::TermInVariables(const std::string& term)
 	return result;
 }
 
-bool KM::Kmap::DifferentByOneBit(const std::string& first, const std::string& second, int32_t& index)
+bool KM::Kmap::DifferentByOneBit(const std::string &first, const std::string &second, int32_t &index)
 {
 	//Knowing if the they are different by one bit or not
 	int32_t counter = 0;
 	for (uint32_t i = 0; i < first.length(); i++)
 	{
-		if (first[i] != second[i] && (first[i] != '-' || second[i] != '-')) {
+		if (first[i] != second[i] && (first[i] != '-' || second[i] != '-'))
+		{
 			counter++;
 			index = i; // changing to the index of the literal to know where to put the dash
-		}	
-	}	
+		}
+	}
 	return (counter != 1) ? false : true;
 }
