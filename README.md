@@ -9,6 +9,8 @@ A univeristy project that aims at familiarizing the students with the use of k-m
 2. Instructor: Professor Mona Farouk 
 
 ## Compiling on Visual Studio
+NOTE: I haven't been able to update the project on Visual Studio so you might need to configure the solution manually.
+
 * Clone the repository on your PC.
 * Open the solution file as it is already configuired properly to work with any paths.
 * Make sure that you put the 'Thirdparty' folder at the same level as the solution directory
@@ -16,9 +18,10 @@ A univeristy project that aims at familiarizing the students with the use of k-m
 * Make sure to compile at the x32 (x86) architecture since the SFML library is linked for that architecture only.
 * If you have any problems with the SFML library, check out the offical page of SFML: https://www.sfml-dev.org/index.php or contact me at: Seif_Sallam@aucegypt.edu
 
-## Demonstration:
-![Image of the Program](https://github.com/Seif-Sallam/KmapSolver/blob/master/Demo.jpg)
 
-## Contacts
-* Email: Seif_Sallam@aucegypt.edu
-* Linkedin: [Seif Sallam](https://www.linkedin.com/in/seif-sallam-b58bba196)
+## Compiling on Linux
+
+The project has a Makefile inside it that compiles the proejct correctly and places the output inside the directory `./KMapSolver/Build/`
+
+## Demonstration:
+<img src=./Demo.jpg>
