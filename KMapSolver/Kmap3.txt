@@ -1,9 +1,0 @@
-This is a representation of the Kmap that is 4x4:
-This is the Kmap: 
-       AB
-CD 0 0 0 0 
-   0 0 0 0 
-   0 0 0 0 
-   0 0 0 0 
-The simplified expression is: 
-False

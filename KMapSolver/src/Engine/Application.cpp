@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "Engine/Application.h"
 using namespace WI;
 
 float Application::m_fDTime = 0.0f;
@@ -16,7 +16,7 @@ WI::Application::Application()
 	m_clearColor = sf::Color::Black;
 }
 
-Application::Application(const sf::Vector2u& resolution, const std::string& appName, const sf::Color& clearColor)
+Application::Application(const sf::Vector2u &resolution, const std::string &appName, const sf::Color &clearColor)
 {
 	m_appWindow = new sf::RenderWindow(sf::VideoMode(resolution.x, resolution.y), appName);
 	m_event = new sf::Event;
@@ -52,7 +52,6 @@ void Application::HandleEvents_()
 }
 void Application::HandleEvents()
 {
-
 }
 
 void Application::Update()
@@ -82,14 +81,14 @@ void Application::Run()
 		CheckStates();
 		CheckOGStates();
 		Update();
-		
+
 		m_appWindow->setView(m_defaultView);
 		m_appWindow->clear(m_clearColor);
 		Draw();
 		m_appWindow->display();
 	}
 }
-void Application::SetClearColor(const sf::Color& clearColor)
+void Application::SetClearColor(const sf::Color &clearColor)
 {
 	m_clearColor = clearColor;
 }
